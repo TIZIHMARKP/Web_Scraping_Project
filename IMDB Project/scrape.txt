@@ -1,0 +1,35 @@
+import * as cheerio from 'cheerio';
+import fetch from 'node-fetch'; // Ensure node-fetch is installed to fetch data
+
+export async function searchMovies() {
+  try {
+    console.log("Searching movies...");
+
+    // Assuming you're fetching the body content from a URL
+    const response = await fetch('https://www.imdb.com/find?s=tt&ttype=ft&ref_=fn_ft&q='); // Replace with the actual URL
+    const body = await response.text();
+
+    const $ = cheerio.load(body); // Load the body into cheerio
+    const movies = [];
+
+    // Use cheerio to select and parse elements
+    $('section.ipc-page-section.ipc-page-section--base.sc-e8e4ce7-0.fkwWaa').each((i, element) => {
+      const $element = $(element);
+
+      $element.find('ul li').each(function () {
+        const $li = $(this);
+        const movie = {
+          image: $li.find('img.ipc-image').attr('src'),
+          title: $li.find('a.ipc-metadata-list-summary-item__t').text()
+        };
+        movies.push(movie);
+      });
+    });
+
+    console.log("Movies found:", movies);
+    return movies; // Return movies to use elsewhere if needed
+
+  } catch (error) {
+    console.error("Error in searchMovies:", error);
+  }
+}
