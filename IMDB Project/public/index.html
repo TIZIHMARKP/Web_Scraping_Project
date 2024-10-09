@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Search</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">IMDb Scraper</a>
+  </nav>
+
+  <div class="container mt-5">
+    <h1>Search for a Movie</h1>
+    <form id="search-form">
+      <div class="form-group">
+        <input type="text" id="search-input" class="form-control" placeholder="Enter movie title" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <ul id="movie-list" class="list-group mt-3"></ul>
+  </div>
+
+  <script>
+    document.getElementById('search-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('search-input').value;
+      fetch(`http://localhost:3000/search/${title}`)
+        .then(response => response.json())
+        .then(movies => {
+          const movieList = document.getElementById('movie-list');
+          movieList.innerHTML = '';
+          movies.forEach(movie => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+            listItem.innerHTML = `
+              <a href="movie.html?id=${movie.id}">
+                <img src="${movie.image}" alt="${movie.title}" style="width: 50px; height: auto;"> ${movie.title}
+              </a>`;
+            movieList.appendChild(listItem);
+          });
+        });
+    });
+  </script>
+</body>
+</html>

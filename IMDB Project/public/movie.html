@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Details</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="index.html">IMDb Scraper</a>
+  </nav>
+
+  <div class="container mt-5">
+    <div id="movie-details">
+      <h1 id="title" class="mb-3"></h1>
+      <img id="poster" class="mb-3" src="" alt="Movie Poster" style="width: 200px;">
+      <p><strong>MPAA Rating:</strong> <span id="mpaaRating"></span></p>
+      <p><strong>Runtime:</strong> <span id="runtime"></span></p>
+      <p><strong>Genres:</strong> <span id="genres"></span></p>
+      <p><strong>Release Date:</strong> <span id="releaseDate"></span></p>
+      <p><strong>IMDb Rating:</strong> <span id="imdbRating"></span></p>
+      <p><strong>Summary:</strong> <span id="summary"></span></p>
+      <p><strong>Directors:</strong> <span id="directors"></span></p>
+      <p><strong>Writers:</strong> <span id="writers"></span></p>
+      <p><strong>Stars:</strong> <span id="stars"></span></p>
+      <p><strong>Storyline:</strong> <span id="storyline"></span></p>
+      <p><strong>Companies:</strong> <span id="companies"></span></p>
+    </div>
+  </div>
+
+  <script>
+    // Parse the IMDb ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const movieId = urlParams.get('id');
+
+    // Fetch and display movie details
+    fetch(`http://localhost:3000/movie/${movieId}`)
+      .then(response => response.json())
+      .then(movie => {
+        document.getElementById('title').textContent = movie.title;
+        document.getElementById('poster').src = movie.poster;
+        document.getElementById('mpaaRating').textContent = movie.mpaaRating || 'N/A';
+        document.getElementById('runtime').textContent = movie.runtime;
+        document.getElementById('genres').textContent = movie.genres.join(', ');
+        document.getElementById('releaseDate').textContent = movie.releaseDate;
+        document.getElementById('imdbRating').textContent = movie.imdbRating;
+        document.getElementById('summary').textContent = movie.summary;
+        document.getElementById('directors').textContent = movie.directors.join(', ');
+        document.getElementById('writers').textContent = movie.writers.join(', ');
+        document.getElementById('stars').textContent = movie.stars.join(', ');
+        document.getElementById('storyline').textContent = movie.storyline;
+        document.getElementById('companies').textContent = movie.companies.join(', ');
+      })
+      .catch(error => console.error('Error fetching movie details:', error));
+  </script>
+</body>
+</html>
