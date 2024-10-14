@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 import * as cheerio from 'cheerio';
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 9000;
 
 app.use(cors());
 app.use(express.json());
@@ -27,7 +27,7 @@ app.get('/search/:title', async (req, res) => {
     const $ = cheerio.load(body);
     const movies = [];
 
-    $('section.ipc-page-section.ipc-page-section--base.sc-e8e4ce7-0.fkWWaa').each((i, element) => {
+    $('.ipc-metadata-list-summary-item.ipc-metadata-list-summary-item--click.find-result-item.find-title-result').each((i, element) => {
       const $element = $(element);
       const movie = {
         title: $element.find('a.ipc-metadata-list-summary-item__t').text(),

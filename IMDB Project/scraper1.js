@@ -1,7 +1,7 @@
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 
-export async function searchMovies(title) {
+ async function searchMovies(title) {
   try {
     console.log(`Searching movies with title: ${title}`);
 
@@ -31,3 +31,5 @@ export async function searchMovies(title) {
     throw error; // Propagate error to be caught in route handler
   }
 }
+
+export default searchMovies
